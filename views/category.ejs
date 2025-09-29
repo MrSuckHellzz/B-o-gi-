@@ -1,0 +1,13 @@
+<%- include('partials/header') %>
+<main>
+    <h1 class="main-title text-center m-3 color">Các nhóm hàng</h1>
+
+    <form class="d-flex me-3 justify-content-center" method="POST" action="/createCategory">
+        <label for="categoryName" class="form-label me-2">Thêm nhóm hàng:</label>
+        <input type="text" class="form-control me-2" id="categoryName" name="categoryName" required>
+        <label for="categoryDescription" class="form-label me-2">Mô tả:</label>
+        <input type="text" class="form-control me-2" id="categoryDescription" name="categoryDescription">
+        <button type="submit" class="btn btn-primary">Thêm</button>
+    </form>
+</main>
+<%- include('partials/footer') %>
