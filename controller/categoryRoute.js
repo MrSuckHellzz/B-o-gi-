@@ -14,3 +14,5 @@ router.get('/', async (req,res) => {
         console.error(err);
     }
 });
+
+module.exports = router;

@@ -1,13 +1,31 @@
 <%- include('partials/header') %>
 <main>
-    <h1 class="main-title text-center m-3 color">Các nhóm hàng</h1>
+    <h1 class="main-title text-center m-3 color"><strong>Các nhóm hàng</strong></h1>
 
-    <form class="d-flex me-3 justify-content-center" method="POST" action="/createCategory">
-        <label for="categoryName" class="form-label me-2">Thêm nhóm hàng:</label>
-        <input type="text" class="form-control me-2" id="categoryName" name="categoryName" required>
+
+    <h3 id="form-button">&#x2795; Thêm nhóm hàng</h3>
+    <form id="category-form" method="POST" action="/createCategory">
+        <label for="categoryName" class="form-label me-2">Tên nhóm hàng:</label>
+        <input type="text" class="form-control me-2 border-black" id="categoryName" name="categoryName" required>
         <label for="categoryDescription" class="form-label me-2">Mô tả:</label>
-        <input type="text" class="form-control me-2" id="categoryDescription" name="categoryDescription">
-        <button type="submit" class="btn btn-primary">Thêm</button>
+        <textarea class="form-control me-2 border-black" id="categoryDescription" name="categoryDescription" rows="5" required></textarea>
+        <label for="categoryImage" class="form-label me-2">URL hình ảnh:</label>
+        <input type="text" class="form-control me-2 border-black" id="categoryImage" name="categoryImage">
+        <button type="submit" class="submit-button">Thêm</button>
     </form>
+
+    <hr>
+
+    <div class="category-list">
+        <div class="category-item">
+            <div class="first-column">
+                <h3>Ten hang</h3>
+                <img src="https://thegioithepvn.com/wp-content/uploads/2021/07/thep-hop.jpg" alt="Category Image">
+            </div>
+            <div class="second-column">
+                <p>Mo ta nhom hang</p>
+            </div>
+        </div>
+    </div>
 </main>
 <%- include('partials/footer') %>

@@ -13,6 +13,10 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+//Middleware for form parsing
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+
 //MongoDB connection
 const MONGODB_CONNECTION_URI = process.env.MONGODB_CONNECTION_URI;
 mongoose.connect(MONGODB_CONNECTION_URI)
@@ -21,10 +25,8 @@ mongoose.connect(MONGODB_CONNECTION_URI)
 
 //Import and define routes
 const categoryRoute = require('./controller/categoryRoute');
-const productRoute = require('./controller/productRoute');
 
 app.use('/category', categoryRoute);
-app.use('/product', productRoute);
 
 //Rendering Homepage
 app.get('/', (req,res) => {
