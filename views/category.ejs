@@ -4,7 +4,7 @@
 
 
     <h3 id="form-button">&#x2795; Thêm nhóm hàng</h3>
-    <form id="category-form" method="POST" action="/createCategory">
+    <form id="category-form" method="POST" action="/category">
         <label for="categoryName" class="form-label me-2">Tên nhóm hàng:</label>
         <input type="text" class="form-control me-2 border-black" id="categoryName" name="categoryName" required>
         <label for="categoryDescription" class="form-label me-2">Mô tả:</label>
@@ -17,15 +17,24 @@
     <hr>
 
     <div class="category-list">
-        <div class="category-item">
-            <div class="first-column">
-                <h3>Ten hang</h3>
-                <img src="https://thegioithepvn.com/wp-content/uploads/2021/07/thep-hop.jpg" alt="Category Image">
+        <% categories.forEach(category => { %>
+            <div class="category-item">
+                <div class="first-column">
+                    <h3><%= category.name %></h3>
+                    <% if (category.image) { %>
+                        <img src="<%= category.image %>" alt="Category Image">
+                    <% } else { %>
+                        <img src="/placeholder.png" alt="No Image Available">
+                    <% } %>
+                </div>
+                <div class="second-column">
+                    <p><%= category.description %></p>
+                    <form method="POST" action="/category/delete/<%= category._id %>" onsubmit="return confirm('Bạn có chắc chắn muốn xóa nhóm hàng này không?');">
+                        <button type="submit" class="delete-button">&#10060; Xóa</button>
+                    </form>
+                </div>
             </div>
-            <div class="second-column">
-                <p>Mo ta nhom hang</p>
-            </div>
-        </div>
+        <% }) %>
     </div>
 </main>
 <%- include('partials/footer') %>

@@ -118,7 +118,7 @@ form label {
 .category-item {
     border: 2px solid black;
     border-radius: 10px;
-    padding: 10px;
+    padding: 50px;
     display: grid;
     grid-template-columns: 30% 70%;
     align-items: center;
@@ -131,6 +131,7 @@ form label {
 }
 .category-item h3, p{
     margin: 10px;
+    padding: 10px;
     text-align: center;
 }
 .category-item:hover {
@@ -138,6 +139,27 @@ form label {
     transform: translate(0, -3px);
     transition: linear 0.2s;
     cursor: pointer;
+}
+.second-column {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 100px;
+}
+.delete-button {
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 1rem;
+}
+.delete-button:hover {
+    background-color: darkred;
+    cursor: pointer;
+    transition: linear 0.2s;
+    transform: translate(0, -3px);
 }
 
 /* Footer */
