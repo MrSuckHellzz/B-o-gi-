@@ -18,23 +18,40 @@
 
     <div class="category-list">
         <% categories.forEach(category => { %>
-            <div class="category-item">
-                <div class="first-column">
-                    <h3><%= category.name %></h3>
-                    <% if (category.image) { %>
-                        <img src="<%= category.image %>" alt="Category Image">
-                    <% } else { %>
-                        <img src="/placeholder.png" alt="No Image Available">
-                    <% } %>
+            <a href="/product/<%= category._id %>" class="category-link">
+                <div class="category-item">
+                    <div class="first-column">
+                        <h3><%= category.name %></h3>
+                        <% if (category.image) { %>
+                            <img src="<%= category.image %>" alt="Category Image">
+                        <% } else { %>
+                            <img src="/placeholder.png" alt="No Image Available">
+                        <% } %>
+                    </div>
+                    <div class="second-column">
+                        <p><%= category.description %></p>
+                        <form method="POST" action="/category/delete/<%= category._id %>" onsubmit="return confirm('Bạn có chắc chắn muốn xóa nhóm hàng này không?');">
+                            <button type="submit" class="delete-button">&#10060; Xóa</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="second-column">
-                    <p><%= category.description %></p>
-                    <form method="POST" action="/category/delete/<%= category._id %>" onsubmit="return confirm('Bạn có chắc chắn muốn xóa nhóm hàng này không?');">
-                        <button type="submit" class="delete-button">&#10060; Xóa</button>
-                    </form>
-                </div>
-            </div>
+            </a>
         <% }) %>
     </div>
 </main>
+<script>
+    //Toggle category form visibility
+    let formButton = document.getElementById('form-button');
+    let categoryForm = document.getElementById('category-form');
+    
+    formButton.addEventListener('click', () => {
+        if (categoryForm.classList.contains('visible') === false) {
+            categoryForm.classList.toggle('visible');
+            formButton.innerHTML ="&#x2796; Ẩn biểu mẫu";
+        } else {
+            categoryForm.classList.toggle('visible');
+            formButton.innerHTML ="&#x2795; Thêm nhóm hàng";
+        }
+    });
+</script>
 <%- include('partials/footer') %>

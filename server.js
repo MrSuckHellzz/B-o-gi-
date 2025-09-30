@@ -25,8 +25,10 @@ mongoose.connect(MONGODB_CONNECTION_URI)
 
 //Import and define routes
 const categoryRoute = require('./controller/categoryRoute');
+const productRoute = require('./controller/productRoute');
 
 app.use('/category', categoryRoute);
+app.use('/product', productRoute);
 
 //Rendering Homepage
 app.get('/', (req,res) => {

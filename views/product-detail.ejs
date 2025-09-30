@@ -1,3 +1,139 @@
 <%- include('partials/header') %>
+<main>
+    <a href="/category" class="category-return"><p>&#8592; Quay về trang Nhóm Hàng</p></a>
+    <h1 class="main-title text-center m-3 color"><strong>Tên nhóm hàng được chọn</strong></h1>
 
+    <h3 id="form-product-button">&#x2795; Thêm hàng</h3>
+    <form id="product-form" method="POST" action="/product">
+        <label for="productName" class="form-label me-2">Tên mặt hàng (qui cách):</label>
+        <input type="text" class="form-control me-2 border-black" id="productName" name="productName" required>
+        <label for="productWeight" class="form-label me-2">Trọng lượng:</label>
+        <input type="text" class="form-control me-2 border-black" id="productWeight" name="productWeight">
+        <label for="productLength" class="form-label me-2">Độ dài:</label>
+        <input type="text" class="form-control me-2 border-black" id="productLength" name="productLength">
+        <label for="productWidth" class="form-label me-2">Độ rộng:</label>
+        <input type="text" class="form-control me-2 border-black" id="productWidth" name="productWidth">
+        <label for="productThick" class="form-label me-2">Độ dày:</label>
+        <input type="text" class="form-control me-2 border-black" id="productThick" name="productThick">
+        <label for="priceIn" class="form-label me-2">Giá nhập:</label>
+        <input type="text" class="form-control me-2 border-black" id="priceIn" name="priceIn">
+        <label for="priceOut" class="form-label me-2">Giá bán:</label>
+        <input type="text" class="form-control me-2 border-black" id="priceOut" name="priceOut">
+        <label for="pricePer" class="form-label me-2">Đơn giá:</label>
+        <input type="text" class="form-control me-2 border-black" id="pricePer" name="pricePer">
+        <button type="submit" class="submit-button full-width">Thêm</button>
+    </form>
+    <hr>
+    <div class="category-products">
+        <table class="product-table">
+            <thead>
+                <tr>
+                    <td>Tên hàng (qui cách)</td>
+                    <td>Trọng lượng</td>
+                    <td>Độ dài</td>
+                    <td>Độ rộng</td>
+                    <td>Độ dày</td>
+                    <td>Giá nhập</td>
+                    <td>Giá bán</td>
+                    <td>Đơn giá</td>
+                    <td style="
+                        background-color: rgb(255, 0, 0); 
+                        color: rgb(255, 255, 255);
+                        ">
+                    Xóa
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>sdsad</td>
+                    <td>gdf</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="product-remove">🗑️</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<script>
+    //Toggle product form visibility
+    let productButton = document.getElementById('form-product-button');
+    let productForm = document.getElementById('product-form');
+    
+    productButton.addEventListener('click', () => {
+        if (productForm.classList.contains('visible') === false) {
+            productForm.classList.toggle('visible');
+            productButton.innerHTML ="&#x2796; Ẩn biểu mẫu";
+        } else {
+            productForm.classList.toggle('visible');
+            productButton.innerHTML ="&#x2795; Thêm mặt hàng";
+        }
+    });
+</script>
 <%- include('partials/footer') %>
