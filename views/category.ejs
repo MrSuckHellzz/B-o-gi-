@@ -46,7 +46,7 @@
                     <form method="POST" action="/category/delete/<%= category._id %>" onsubmit="return confirm('Bạn có chắc chắn muốn xóa nhóm hàng này không?');">
                         <button type="submit" class="delete-button">&#10060; Xóa</button>
                     </form>
-                    <button class="edit-button" data-bs-target="#category-fixing-<%= category._id %>" data-bs-toggle="modal" data-bs-dismiss="modal">&#9998; Sửa</button>
+                    <button class="category-edit-button" data-bs-target="#category-fixing-<%= category._id %>" data-bs-toggle="modal" data-bs-dismiss="modal">&#9998; Sửa</button>
                     <div id="category-fixing-<%= category._id %>" class="modal fade" tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content">

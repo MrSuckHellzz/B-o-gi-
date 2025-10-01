@@ -53,4 +53,27 @@ router.post('/delete/:categoryId/:productId', async(req,res) => {
     }
 });
 
+//POST update a product
+router.post ('/update/:categoryId/:productId', async function (req,res) {
+    try{
+        const {productName, productWeight, productLength, productWidth, productThick, priceIn, priceOut, pricePer } = req.body;
+        const productId = req.params.productId;
+        const categoryId = req.params.categoryId;
+        await Product.findByIdAndUpdate(productId, {
+            name: productName,
+            priceIn: priceIn,
+            priceOut: priceOut,
+            pricePer: pricePer,
+            weight: productWeight,
+            width: productWidth,
+            thickness: productThick,
+            length: productLength
+        });
+        res.redirect(`/product/${categoryId}`);
+    } catch (err) {
+        res.status(500).send('Server Error');
+        console.error(err);
+    }
+});
+
 module.exports = router;

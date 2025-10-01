@@ -4,10 +4,7 @@
     <h1 class="main-title text-center m-3 color"><strong>Tên nhóm hàng được chọn</strong></h1>
 
     <div class="product-form-container">
-        <form class="d-flex me-3" method="GET" action="/search">
-            <input class="search-app-input" type="search" name="q" placeholder="Tìm kiếm" aria-label="Tìm Kiếm" required>
-        </form>
-
+        <input class="search-app-input" type="search" id="liveSearch" placeholder="Tìm kiếm mặt hàng..." aria-label="Tìm Kiếm">
         <h3 id="form-product-button">&#x2795; Thêm hàng</h3>
     </div>
     <form id="product-form" method="POST" action="/product/<%= categoryId %>">
@@ -29,7 +26,14 @@
         <input type="text" class="form-control me-2 border-black" id="pricePer" name="pricePer">
         <button type="submit" class="submit-button full-width">Thêm</button>
     </form>
+
     <hr>
+
+    <!--No result message-->
+    <div id="no-results">
+        Không tìm thấy nhóm hàng nào phù hợp với "<span id="search-term"></span>"
+    </div>
+    
     <div class="category-products">
         <table class="product-table">
             <thead>
@@ -48,11 +52,17 @@
                         ">
                     Xóa
                     </td>
+                    <td style="
+                        background-color: rgb(1, 1, 169);
+                        color: white;
+                        ">
+                    Chỉnh Sửa
+                    </td>
                 </tr>
             </thead>
             <tbody>
                 <% products.forEach(product => {%>
-                    <tr>
+                    <tr class="product-row" data-name="<%= product.name.toLowerCase() %>">
                         <td><%= product.name %></td>
                         <td><%= product.weight %></td>
                         <td><%= product.length %></td>
@@ -65,6 +75,56 @@
                             <form method = "POST" action="/product/delete/<%= categoryId %>/<%= product._id %>" onsubmit="return confirm('Bạn có chắc chắn muốn xóa mặt hàng này không?');">
                                 <button type="submit" class="product-delete-button">🗑️</button>
                             </form>
+                        </td>
+                        <td class ="product-edit">
+                            <button class="product-edit-button" data-bs-target="#product-fixing-<%= product._id %>" data-bs-toggle="modal" data-bs-dismiss="modal">✏️</button> 
+                            <div id="product-fixing-<%= product._id %>" class="modal fade" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Chỉnh sửa mặt hàng</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST" action="/product/update/<%= categoryId %>/<%= product._id %>">
+                                                <div class="mb-3">
+                                                    <label for="productName" class="form-label">Tên mặt hàng (quy cách):</label>
+                                                    <input type="text" class="form-control border-black" id="productName" name="productName" value="<%= product.name %>" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="productWeight" class="form-label">Trọng lượng:</label>
+                                                    <input type="text" class="form-control border-black" id="productWeight" name="productWeight" value="<%= product.weight %>">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="productLength" class="form-label">Độ dài:</label>
+                                                    <input type="text" class="form-control border-black" id="productLength" name="productLength" value="<%= product.length %>">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="productWidth" class="form-label">Độ rộng:</label>
+                                                    <input type="text" class="form-control border-black" id="productWidth" name="productWidth" value="<%= product.width %>">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="productThick" class="form-label">Độ dày:</label>
+                                                    <input type="text" class="form-control border-black" id="productThick" name="productThick" value="<%= product.thickness %>">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="priceIn" class="form-label">Giá nhập:</label>
+                                                    <input type="text" class="form-control border-black" id="priceIn" name="priceIn" value="<%= product.priceIn %>">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="priceOut" class="form-label">Giá bán:</label>
+                                                    <input type="text" class="form-control border-black" id="priceOut" name="priceOut" value="<%= product.priceOut %>">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="pricePer" class="form-label">Đơn giá:</label>
+                                                    <input type="text" class="form-control border-black" id="pricePer" name="pricePer" value="<%= product.pricePer %>">
+                                                </div>
+                                                <button type="submit" class="submit-button full-width">Lưu thay đổi</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                 <% }) %>
@@ -85,6 +145,78 @@
         } else {
             productForm.classList.toggle('visible');
             productButton.innerHTML ="&#x2795; Thêm mặt hàng";
+        }
+    });
+
+    // LIVE SEARCH FUNCTIONALITY
+    const searchInput = document.getElementById('liveSearch');
+    const noResults = document.getElementById('no-results');
+    const searchTerm = document.getElementById('search-term');
+
+    // Function to remove Vietnamese accents/diacritics
+    function removeVietnameseAccents(text) {
+        const vietnameseMap = {
+            'à': 'a', 'á': 'a', 'ạ': 'a', 'ả': 'a', 'ã': 'a',
+            'â': 'a', 'ầ': 'a', 'ấ': 'a', 'ậ': 'a', 'ẩ': 'a', 'ẫ': 'a',
+            'ă': 'a', 'ằ': 'a', 'ắ': 'a', 'ặ': 'a', 'ẳ': 'a', 'ẵ': 'a',
+            'è': 'e', 'é': 'e', 'ẹ': 'e', 'ẻ': 'e', 'ẽ': 'e',
+            'ê': 'e', 'ề': 'e', 'ế': 'e', 'ệ': 'e', 'ể': 'e', 'ễ': 'e',
+            'ì': 'i', 'í': 'i', 'ị': 'i', 'ỉ': 'i', 'ĩ': 'i',
+            'ò': 'o', 'ó': 'o', 'ọ': 'o', 'ỏ': 'o', 'õ': 'o',
+            'ô': 'o', 'ồ': 'o', 'ố': 'o', 'ộ': 'o', 'ổ': 'o', 'ỗ': 'o',
+            'ơ': 'o', 'ờ': 'o', 'ớ': 'o', 'ợ': 'o', 'ở': 'o', 'ỡ': 'o',
+            'ù': 'u', 'ú': 'u', 'ụ': 'u', 'ủ': 'u', 'ũ': 'u',
+            'ư': 'u', 'ừ': 'u', 'ứ': 'u', 'ự': 'u', 'ử': 'u', 'ữ': 'u',
+            'ỳ': 'y', 'ý': 'y', 'ỵ': 'y', 'ỷ': 'y', 'ỹ': 'y',
+            'đ': 'd', 'Đ': 'D'
+        };
+        
+        return text.toLowerCase().replace(/[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđĐ]/g, 
+            function(match) {
+                return vietnameseMap[match] || match;
+            });
+    }
+    
+    // Function to check if search terms match (accent-insensitive)
+    function matchesSearch(productName, searchQuery) {
+        // Remove accents from both strings
+        const normalizedName = removeVietnameseAccents(productName);
+        const normalizedQuery = removeVietnameseAccents(searchQuery.trim());
+        
+        if (normalizedQuery === '') return true; // Show all if no search
+        
+        // Split search query into individual words
+        const searchWords = normalizedQuery.split(/\s+/);
+        
+        // Check if ALL search words are found in the category name
+        return searchWords.every(word => normalizedName.includes(word));
+    }
+
+    searchInput.addEventListener('input', function() {
+        const query = this.value.toLowerCase().trim();
+        const productRows = document.querySelectorAll('.product-row');
+        let visibleCount = 0;
+
+        productRows.forEach(row => {
+            const name = row.getAttribute('data-name');
+            
+            // Check if query matches name or description
+            if (matchesSearch(name, query)) {
+                row.style.display= 'table-row';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        // Show/hide "no results" message
+        if (query === '') {
+            noResults.style.display = 'none';
+        } else if (visibleCount === 0) {
+            noResults.style.display = 'block';
+            searchTerm.textContent = query;
+        } else {
+            noResults.style.display = 'none';
         }
     });
 </script>
