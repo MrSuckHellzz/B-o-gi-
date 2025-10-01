@@ -126,7 +126,7 @@ B-o-gi-/
 
    ```env
    PORT=4000
-   MONGODB_CONNECTION_URI= mongodb+srv://admin:6Zd0rigJ0WydZc6A@cluster0.s0z1lf0.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0
+   MONGODB_CONNECTION_URI= mongodb+srv://username:password@cluster.mongodb.net/database-name?retryWrites=true&w=majority&appName=Cluster0
    ```
 
 4. **Start the application**
