@@ -146,6 +146,10 @@ form label {
     align-items: center;
     margin-left: 100px;
 }
+.second-column p {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
 .delete-button {
     background-color: var(--primary-color);
     border: none;
@@ -166,6 +170,21 @@ form label {
     color: black;
 }
 /* Product page */
+.product-form-container {
+    display: flex;
+    justify-content: space-between;
+}
+.search-app-input {
+    background-color: green;
+    color: white;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 0.5rem;
+    font-size: 1.3rem;
+}
+.search-app-input::placeholder {
+    color: white;
+}
 .category-return {
     display: inline-block;
     justify-content: left;
@@ -232,6 +251,12 @@ thead td {
 #product-form input:focus {
     outline: 2px solid var(--primary-color);
     box-shadow: 0 0 5px var(--primary-color);
+}
+.product-delete-button {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
 }
 /* Footer */
 footer {

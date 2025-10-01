@@ -3,9 +3,15 @@
     <a href="/category" class="category-return"><p>&#8592; Quay về trang Nhóm Hàng</p></a>
     <h1 class="main-title text-center m-3 color"><strong>Tên nhóm hàng được chọn</strong></h1>
 
-    <h3 id="form-product-button">&#x2795; Thêm hàng</h3>
-    <form id="product-form" method="POST" action="/product">
-        <label for="productName" class="form-label me-2">Tên mặt hàng (qui cách):</label>
+    <div class="product-form-container">
+        <form class="d-flex me-3" method="GET" action="/search">
+            <input class="search-app-input" type="search" name="q" placeholder="Tìm kiếm" aria-label="Tìm Kiếm" required>
+        </form>
+
+        <h3 id="form-product-button">&#x2795; Thêm hàng</h3>
+    </div>
+    <form id="product-form" method="POST" action="/product/<%= categoryId %>">
+        <label for="productName" class="form-label me-2">Tên mặt hàng (quy cách):</label>
         <input type="text" class="form-control me-2 border-black" id="productName" name="productName" required>
         <label for="productWeight" class="form-label me-2">Trọng lượng:</label>
         <input type="text" class="form-control me-2 border-black" id="productWeight" name="productWeight">
@@ -28,7 +34,7 @@
         <table class="product-table">
             <thead>
                 <tr>
-                    <td>Tên hàng (qui cách)</td>
+                    <td>Tên hàng (quy cách)</td>
                     <td>Trọng lượng</td>
                     <td>Độ dài</td>
                     <td>Độ rộng</td>
@@ -45,77 +51,23 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>sdsad</td>
-                    <td>gdf</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td class="product-remove">🗑️</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
+                <% products.forEach(product => {%>
+                    <tr>
+                        <td><%= product.name %></td>
+                        <td><%= product.weight %></td>
+                        <td><%= product.length %></td>
+                        <td><%= product.width %></td>
+                        <td><%= product.thickness %></td>
+                        <td><%= product.priceIn %></td>
+                        <td><%= product.priceOut %></td>
+                        <td><%= product.pricePer %></td>
+                        <td class="product-remove">
+                            <form method = "POST" action="/product/delete/<%= categoryId %>/<%= product._id %>" onsubmit="return confirm('Bạn có chắc chắn muốn xóa mặt hàng này không?');">
+                                <button type="submit" class="product-delete-button">🗑️</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
             </tbody>
         </table>
     </div>

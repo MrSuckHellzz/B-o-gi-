@@ -12,7 +12,7 @@ const productSchema = new mongoose.Schema({
     weight: Number,
     width: Number,
     thickness: Number,
-    height: Number,
+    length: Number,
     category: {
         type: mongoose.Schema.ObjectId,
         ref: 'Category',
