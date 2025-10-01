@@ -44,4 +44,21 @@ router.post('/delete/:id', async(req,res)=>{
     }
 });
 
+//POST update category
+router.post('/update/:id', async(req,res)=> {
+    try{
+        const categoryId = req.params.id;
+        const { categoryName, categoryDescription, categoryImage } = req.body;
+        await Category.findByIdAndUpdate(categoryId, {
+            name: categoryName,
+            description: categoryDescription,
+            image: categoryImage
+        });
+        res.redirect('/category');
+    } catch (err) {
+        res.status(500).send('Server Error');
+        console.error(err);
+    }
+});
+
 module.exports = router;
