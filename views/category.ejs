@@ -2,8 +2,11 @@
 <main>
     <h1 class="main-title text-center m-3 color"><strong>Các nhóm hàng</strong></h1>
 
+    <div class="category-form-container">
+        <input class="search-app-input" type="search" id="liveSearch" placeholder="Tìm kiếm nhóm hàng..." aria-label="Tìm Kiếm">
+        <h3 id="form-button">&#x2795; Thêm nhóm hàng</h3>
+    </div>
 
-    <h3 id="form-button">&#x2795; Thêm nhóm hàng</h3>
     <form id="category-form" method="POST" action="/category">
         <label for="categoryName" class="form-label me-2">Tên nhóm hàng:</label>
         <input type="text" class="form-control me-2 border-black" id="categoryName" name="categoryName" required>
@@ -16,9 +19,14 @@
 
     <hr>
 
+    <!--No result message-->
+    <div id="no-results">
+        Không tìm thấy nhóm hàng nào phù hợp với "<span id="search-term"></span>"
+    </div>
+
     <div class="category-list">
         <% categories.forEach(category => { %>
-            <div class="category-card">
+            <div class="category-card" data-name="<%= category.name.toLowerCase() %>">
                 <a href="/product/<%= category._id %>" class="category-link">
                     <div class="category-item">
                         <div class="first-column">
@@ -85,5 +93,79 @@
             formButton.innerHTML ="&#x2795; Thêm nhóm hàng";
         }
     });
+
+    // LIVE SEARCH FUNCTIONALITY
+    const searchInput = document.getElementById('liveSearch');
+    const noResults = document.getElementById('no-results');
+    const searchTerm = document.getElementById('search-term');
+
+    // Function to remove Vietnamese accents/diacritics
+    function removeVietnameseAccents(text) {
+        const vietnameseMap = {
+            'à': 'a', 'á': 'a', 'ạ': 'a', 'ả': 'a', 'ã': 'a',
+            'â': 'a', 'ầ': 'a', 'ấ': 'a', 'ậ': 'a', 'ẩ': 'a', 'ẫ': 'a',
+            'ă': 'a', 'ằ': 'a', 'ắ': 'a', 'ặ': 'a', 'ẳ': 'a', 'ẵ': 'a',
+            'è': 'e', 'é': 'e', 'ẹ': 'e', 'ẻ': 'e', 'ẽ': 'e',
+            'ê': 'e', 'ề': 'e', 'ế': 'e', 'ệ': 'e', 'ể': 'e', 'ễ': 'e',
+            'ì': 'i', 'í': 'i', 'ị': 'i', 'ỉ': 'i', 'ĩ': 'i',
+            'ò': 'o', 'ó': 'o', 'ọ': 'o', 'ỏ': 'o', 'õ': 'o',
+            'ô': 'o', 'ồ': 'o', 'ố': 'o', 'ộ': 'o', 'ổ': 'o', 'ỗ': 'o',
+            'ơ': 'o', 'ờ': 'o', 'ớ': 'o', 'ợ': 'o', 'ở': 'o', 'ỡ': 'o',
+            'ù': 'u', 'ú': 'u', 'ụ': 'u', 'ủ': 'u', 'ũ': 'u',
+            'ư': 'u', 'ừ': 'u', 'ứ': 'u', 'ự': 'u', 'ử': 'u', 'ữ': 'u',
+            'ỳ': 'y', 'ý': 'y', 'ỵ': 'y', 'ỷ': 'y', 'ỹ': 'y',
+            'đ': 'd', 'Đ': 'D'
+        };
+        
+        return text.toLowerCase().replace(/[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđĐ]/g, 
+            function(match) {
+                return vietnameseMap[match] || match;
+            });
+    }
+
+    // Function to check if search terms match (accent-insensitive)
+    function matchesSearch(categoryName, searchQuery) {
+        // Remove accents from both strings
+        const normalizedName = removeVietnameseAccents(categoryName);
+        const normalizedQuery = removeVietnameseAccents(searchQuery.trim());
+        
+        if (normalizedQuery === '') return true; // Show all if no search
+        
+        // Split search query into individual words
+        const searchWords = normalizedQuery.split(/\s+/);
+        
+        // Check if ALL search words are found in the category name
+        return searchWords.every(word => normalizedName.includes(word));
+    }
+
+    searchInput.addEventListener('input', function() {
+        const query = this.value.toLowerCase().trim();
+        const categoryCards = document.querySelectorAll('.category-card');
+        let visibleCount = 0;
+
+        categoryCards.forEach(card => {
+            const name = card.getAttribute('data-name');
+            
+            // Check if query matches name or description
+            if (matchesSearch(name, query)) {
+                card.style.display = 'grid';
+                card.style.gridTemplateColumns = '4fr 1fr';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        // Show/hide "no results" message
+        if (query === '') {
+            noResults.style.display = 'none';
+        } else if (visibleCount === 0) {
+            noResults.style.display = 'block';
+            searchTerm.textContent = query;
+        } else {
+            noResults.style.display = 'none';
+        }
+    });
+
 </script>
 <%- include('partials/footer') %>
