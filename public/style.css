@@ -173,15 +173,25 @@ form {
 }
 
 #category-form {
-    display:none;
-}
-
-#category-form.visible {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 1rem;
     margin: 2% 25%;
+    gap: 1rem;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-1rem);
+    transition: all 0.4s ease-in-out;
+    border-top: 5px solid black;
+    padding-top: 1rem;
+}
+
+#category-form.visible {
+    max-height: 100%; 
+    opacity: 1;
+    transform: translateY(0);
+    
 }
 
 #category-form input:focus, #category-form textarea:focus {
@@ -405,14 +415,22 @@ thead td {
 }
 
 #product-form {
-    display: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 2% 25%;
+    gap: 1rem;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-1rem);
+    transition: all 0.4s ease-in-out;
+    padding-top: 1rem;
 }
 
 #product-form.visible {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    margin: 2% 25%;
+    max-height: 100%; 
+    opacity: 1;
+    transform: translateY(0);
 }
 
 #product-form.visible .full-width {
