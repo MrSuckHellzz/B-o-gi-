@@ -433,7 +433,7 @@ thead td {
     transform: translateY(0);
 }
 
-#product-form.visible .full-width {
+#product-form .full-width {
     grid-column: span 2;
 }
 
