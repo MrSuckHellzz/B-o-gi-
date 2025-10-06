@@ -80,6 +80,25 @@
     </div>
 </main>
 <script>
+    // Save scroll position before form submissions
+    function saveScrollPosition() {
+        sessionStorage.setItem('scrollPosition', window.scrollY);
+    }
+
+    // Restore scroll position after page load
+    window.addEventListener('load', function() {
+        const savedPosition = sessionStorage.getItem('scrollPosition');
+        if (savedPosition) {
+            window.scrollTo(0, parseInt(savedPosition));
+            sessionStorage.removeItem('scrollPosition');
+        }
+    });
+
+    // Add event listeners to forms
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', saveScrollPosition);
+    });
+    
     //Toggle category form visibility
     let formButton = document.getElementById('form-button');
     let categoryForm = document.getElementById('category-form');
