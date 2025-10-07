@@ -1,7 +1,7 @@
 <%- include('partials/header') %>
 <main>
     <a href="/category" class="category-return"><p>&#8592; Quay về trang Nhóm Hàng</p></a>
-    <h1 class="main-title text-center m-3 color"><strong>Tên nhóm hàng được chọn</strong></h1>
+    <h1 class="main-title text-center m-3 color"><strong><%= categoryName %></strong></h1>
 
     <div class="product-form-container">
         <input class="search-app-input" type="search" id="liveSearch" placeholder="Tìm kiếm mặt hàng..." aria-label="Tìm Kiếm">
@@ -10,20 +10,20 @@
     <form id="product-form" method="POST" action="/product/<%= categoryId %>">
         <label for="productName" class="form-label me-2">Tên mặt hàng (quy cách):</label>
         <input type="text" class="form-control me-2 border-black" id="productName" name="productName" required>
-        <label for="productWeight" class="form-label me-2">Trọng lượng:</label>
+        <label for="productWeight" class="form-label me-2">Trọng lượng (kg):</label>
         <input type="text" class="form-control me-2 border-black" id="productWeight" name="productWeight">
-        <label for="productLength" class="form-label me-2">Độ dài:</label>
+        <label for="productLength" class="form-label me-2">Độ dài (mm):</label>
         <input type="text" class="form-control me-2 border-black" id="productLength" name="productLength">
-        <label for="productWidth" class="form-label me-2">Độ rộng:</label>
+        <label for="productWidth" class="form-label me-2">Độ rộng (mm):</label>
         <input type="text" class="form-control me-2 border-black" id="productWidth" name="productWidth">
-        <label for="productThick" class="form-label me-2">Độ dày:</label>
+        <label for="productThick" class="form-label me-2">Độ dày (mm):</label>
         <input type="text" class="form-control me-2 border-black" id="productThick" name="productThick">
-        <label for="priceIn" class="form-label me-2">Giá nhập:</label>
-        <input type="text" class="form-control me-2 border-black" id="priceIn" name="priceIn">
-        <label for="priceOut" class="form-label me-2">Giá bán:</label>
-        <input type="text" class="form-control me-2 border-black" id="priceOut" name="priceOut">
-        <label for="pricePer" class="form-label me-2">Đơn giá:</label>
-        <input type="text" class="form-control me-2 border-black" id="pricePer" name="pricePer">
+        <label for="priceIn" class="form-label me-2">Giá nhập (đồng):</label>
+        <input type="text" class="form-control me-2 border-black price-input" id="priceIn" name="priceIn">
+        <label for="priceOut" class="form-label me-2">Giá bán (đồng):</label>
+        <input type="text" class="form-control me-2 border-black price-input" id="priceOut" name="priceOut">
+        <label for="pricePer" class="form-label me-2">Đơn giá (đồng):</label>
+        <input type="text" class="form-control me-2 border-black price-input" id="pricePer" name="pricePer">
         <button type="submit" class="submit-button full-width">Thêm</button>
     </form>
 
@@ -39,13 +39,13 @@
             <thead>
                 <tr>
                     <td>Tên hàng (quy cách)</td>
-                    <td>Trọng lượng</td>
-                    <td>Độ dài</td>
-                    <td>Độ rộng</td>
-                    <td>Độ dày</td>
-                    <td>Giá nhập</td>
-                    <td>Giá bán</td>
-                    <td>Đơn giá</td>
+                    <td>Trọng lượng (kg)</td>
+                    <td>Độ dài (mm)</td>
+                    <td>Độ rộng (mm)</td>
+                    <td>Độ dày (mm)</td>
+                    <td>Giá nhập (đồng)</td>
+                    <td>Giá bán (đồng)</td>
+                    <td>Đơn giá (đồng)</td>
                     <td style="
                         background-color: rgb(255, 0, 0); 
                         color: rgb(255, 255, 255);
@@ -68,9 +68,9 @@
                         <td><%= product.length %></td>
                         <td><%= product.width %></td>
                         <td><%= product.thickness %></td>
-                        <td><%= product.priceIn %></td>
-                        <td><%= product.priceOut %></td>
-                        <td><%= product.pricePer %></td>
+                        <td><%= product.priceIn && !isNaN(product.priceIn) ? Number(product.priceIn).toLocaleString('vi-VN') : '' %></td>
+                        <td><%= product.priceOut && !isNaN(product.priceOut) ? Number(product.priceOut).toLocaleString('vi-VN') : '' %></td>
+                        <td><%= product.pricePer && !isNaN(product.pricePer) ? Number(product.pricePer).toLocaleString('vi-VN') : '' %></td>
                         <td class="product-remove">
                             <form method = "POST" action="/product/delete/<%= categoryId %>/<%= product._id %>" onsubmit="return confirm('Bạn có chắc chắn muốn xóa mặt hàng này không?');">
                                 <button type="submit" class="product-delete-button">🗑️</button>
@@ -92,32 +92,32 @@
                                                     <input type="text" class="form-control border-black" id="productName" name="productName" value="<%= product.name %>" required>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="productWeight" class="form-label">Trọng lượng:</label>
+                                                    <label for="productWeight" class="form-label">Trọng lượng (kg):</label>
                                                     <input type="text" class="form-control border-black" id="productWeight" name="productWeight" value="<%= product.weight %>">
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="productLength" class="form-label">Độ dài:</label>
+                                                    <label for="productLength" class="form-label">Độ dài (mm):</label>
                                                     <input type="text" class="form-control border-black" id="productLength" name="productLength" value="<%= product.length %>">
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="productWidth" class="form-label">Độ rộng:</label>
+                                                    <label for="productWidth" class="form-label">Độ rộng (mm):</label>
                                                     <input type="text" class="form-control border-black" id="productWidth" name="productWidth" value="<%= product.width %>">
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="productThick" class="form-label">Độ dày:</label>
+                                                    <label for="productThick" class="form-label">Độ dày (mm):</label>
                                                     <input type="text" class="form-control border-black" id="productThick" name="productThick" value="<%= product.thickness %>">
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="priceIn" class="form-label">Giá nhập:</label>
-                                                    <input type="text" class="form-control border-black" id="priceIn" name="priceIn" value="<%= product.priceIn %>">
+                                                    <label for="priceIn" class="form-label">Giá nhập (đồng):</label>
+                                                    <input type="text" class="form-control border-black price-input" id="priceIn" name="priceIn" value="<%= product.priceIn %>">
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="priceOut" class="form-label">Giá bán:</label>
-                                                    <input type="text" class="form-control border-black" id="priceOut" name="priceOut" value="<%= product.priceOut %>">
+                                                    <label for="priceOut" class="form-label">Giá bán (đồng):</label>
+                                                    <input type="text" class="form-control border-black price-input" id="priceOut" name="priceOut" value="<%= product.priceOut %>">
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="pricePer" class="form-label">Đơn giá:</label>
-                                                    <input type="text" class="form-control border-black" id="pricePer" name="pricePer" value="<%= product.pricePer %>">
+                                                    <label for="pricePer" class="form-label">Đơn giá (đồng):</label>
+                                                    <input type="text" class="form-control border-black price-input" id="pricePer" name="pricePer" value="<%= product.pricePer %>">
                                                 </div>
                                                 <button type="submit" class="submit-button full-width">Lưu thay đổi</button>
                                             </form>
@@ -134,6 +134,38 @@
 </main>
 
 <script>
+    function formatPriceInput(input) {
+        input.addEventListener('input', function() {
+            // Remove all non-digit characters
+            let value = this.value.replace(/\D/g, '');
+            
+            // Format with thousand separators
+            if (value) {
+                this.value = parseInt(value).toLocaleString('vi-VN');
+            }
+        });
+
+        // Remove formatting when focusing (for easier editing)
+        input.addEventListener('focus', function() {
+            this.value = this.value.replace(/\./g, '');
+        });
+
+        // Re-add formatting when leaving the field
+        input.addEventListener('blur', function() {
+            if (this.value) {
+                let cleanValue = this.value.replace(/\D/g, '');
+                if (cleanValue) {
+                    this.value = parseInt(cleanValue).toLocaleString('vi-VN');
+                }
+            }
+        });
+    }
+
+    // Apply formatting to all price inputs
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.price-input').forEach(formatPriceInput);
+    });
+
     //Toggle product form visibility
     let productButton = document.getElementById('form-product-button');
     let productForm = document.getElementById('product-form');
